@@ -2,14 +2,23 @@
 
 import React from 'react-native';
 import LoginForm from './app/components/LoginForm';
-const { View, AppRegistry } = React;
+import Group from './app/components/Group';
+const { View, AppRegistry, Navigator } = React;
+
+const RouterMapper = (route, navigator) => {
+  if(route.name === 'home') {
+    return <LoginForm navigator={navigator} />
+  } else if(route.name === 'user') {
+    return <Group navigator={navigator} />
+  }
+}
 
 class OpenCollective extends React.Component {
   render() {
     return (
-      <View>
-        <LoginForm></LoginForm>
-      </View>
+      <Navigator
+        initialRoute={{ name: 'home', index: 0}}
+        renderScene={RouterMapper} />
     )
   }
 }

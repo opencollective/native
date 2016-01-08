@@ -1,6 +1,6 @@
 import React from 'react-native'
 import t from 'tcomb-form-native'
-const { View, Text, TouchableHighlight, StyleSheet } = React
+const { View, Text, Image, TouchableHighlight, StyleSheet } = React
 const Form = t.form.Form
 
 var Login = t.struct({
@@ -23,16 +23,26 @@ var loginOptions = {
 }
 
 class LoginForm extends React.Component {
+  constructor() {
+    super();
+    this._next = this._next.bind(this);
+  }
+  _next() {
+    this.props.navigator.push({
+      name: 'user'
+    })
+  }
   render () {
     return (
       <View style={styles.container}>
+        <Image style={styles.logo} source={require('../assets/images/logo.png')} />
         <Text style={styles.description}>Collect money & disperse it transparently</Text>
         <Form
           ref="form"
           type={Login}
           options={loginOptions}
         />
-        <TouchableHighlight style={styles.button}>
+      <TouchableHighlight style={styles.button} onPress={this._next}>
           <Text style={styles.buttonText}>LOGIN</Text>
         </TouchableHighlight>
       </View>
@@ -46,6 +56,9 @@ var styles = StyleSheet.create({
     marginTop: 50,
     padding: 20,
     backgroundColor: '#ffffff',
+  },
+  logo: {
+    alignSelf: 'center'
   },
   description: {
     color: '#7A7B82',
