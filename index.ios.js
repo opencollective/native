@@ -1,10 +1,9 @@
-'use strict';
+import React from 'react-native'
+import LoginForm from './app/components/LoginForm'
+import GroupTransactions from './app/containers/GroupTransactions'
+import GroupList from './app/containers/GroupList'
 
-import React from 'react-native';
-import LoginForm from './app/components/LoginForm';
-import Currency from './app/components/Currency';
-import GroupList from './app/containers/GroupList';
-const { View, AppRegistry, Navigator } = React;
+const { View, AppRegistry, Navigator } = React
 
 const RouterMapper = (route, navigator) => {
   if(route.name === 'home') {
@@ -12,7 +11,7 @@ const RouterMapper = (route, navigator) => {
   } else if(route.name === 'user') {
     return <GroupList navigator={navigator} />
   } else if(route.name === 'transaction') {
-    return <Currency />
+    return <GroupTransactions group={route.group} navigator={navigator}/>
   }
 }
 

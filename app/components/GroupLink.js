@@ -8,16 +8,14 @@ class GroupLink extends React.Component {
     super();
     this._next = this._next.bind(this);
   }
-  _next(name) {
-    this.props.navigator.push({
-      name
-    })
+  _next(name, group) {
+    this.props.navigator.push({name, group})
   }
   render () {
     let { name, balance, currency } = this.props;
     return (
       <View>
-        <TouchableHighlight onPress={this._next.bind(null, 'transactions')}>
+        <TouchableHighlight onPress={this._next.bind(null, 'transaction', this.props)}>
           <View style={styles.groupContainer}>
             <Text style={styles.name}>{name.toUpperCase()}</Text>
             <Currency style={styles.currency} value={balance} currency={currency} />

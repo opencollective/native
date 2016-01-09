@@ -14,7 +14,7 @@ class GroupList extends React.Component {
     let navigator = this.props.navigator
     return (
       <View>
-        <Header title="My collectives" hasBackButton={true} hasForwardButton={true} navigator={navigator}></Header>
+        <Header title="My collectives" hasBackButton={true} navigator={navigator}></Header>
         <PaypalReminder></PaypalReminder>
         { groups.map(group => {
           return <Group {...group} navigator={navigator}/>

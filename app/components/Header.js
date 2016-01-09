@@ -43,22 +43,25 @@ var styles = StyleSheet.create({
     height: 45,
     paddingTop: 20,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     borderBottomColor: '#000000',
     borderBottomWidth: 1
   },
   backButton: {
+    flex: 1,
     fontSize: 15,
     marginLeft: 10
   },
   title: {
+    flex: 2,
     color: '#7A7B82',
     fontSize: 18,
     fontWeight: 'bold'
   },
   forwardButton: {
+    flex: 1,
     fontSize: 15,
-    marginRight: 10
+    marginRight: 10,
+    textAlign: 'right'
   }
 });
 
