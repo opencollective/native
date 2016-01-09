@@ -3,8 +3,9 @@ const { Text } = React;
 
 class Currency extends React.Component {
   render () {
+    let { value } = this.props
     return (
-      <Text>$ 0,0.00</Text>
+      <Text>$ { value }</Text>
     )
   }
 }

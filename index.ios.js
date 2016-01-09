@@ -2,14 +2,17 @@
 
 import React from 'react-native';
 import LoginForm from './app/components/LoginForm';
-import Group from './app/components/Group';
+import Currency from './app/components/Currency';
+import GroupList from './app/containers/GroupList';
 const { View, AppRegistry, Navigator } = React;
 
 const RouterMapper = (route, navigator) => {
   if(route.name === 'home') {
     return <LoginForm navigator={navigator} />
   } else if(route.name === 'user') {
-    return <Group navigator={navigator} />
+    return <GroupList navigator={navigator} />
+  } else if(route.name === 'transaction') {
+    return <Currency />
   }
 }
 
