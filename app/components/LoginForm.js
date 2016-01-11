@@ -1,6 +1,6 @@
 import React from 'react-native'
 import t from 'tcomb-form-native'
-const { View, Text, Image, TouchableHighlight, StyleSheet } = React
+const { View, Text, Image, TouchableHighlight, StyleSheet, AsyncStorage } = React
 const Form = t.form.Form
 
 var Login = t.struct({
@@ -28,6 +28,7 @@ class LoginForm extends React.Component {
     this._next = this._next.bind(this);
   }
   _next() {
+    AsyncStorage.setItem("logged", 'true');
     this.props.navigator.push({
       name: 'user'
     })

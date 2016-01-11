@@ -3,7 +3,7 @@ import Header from '../components/Header'
 import PaypalReminder from '../components/PaypalReminder'
 import Group from '../components/Group'
 
-const { View, Text } = React;
+const { View, Text, AsyncStorage } = React;
 
 class GroupList extends React.Component {
   render () {
@@ -11,14 +11,15 @@ class GroupList extends React.Component {
       {id: 1, name: 'Open Collective', balance: 2, currency: 'USD' },
       {id: 2, name: 'Open Collective Example', balance: 3, currency: 'EUR' }
     ]
-    let navigator = this.props.navigator
+    let { navigator, isLoggedIn } = this.props
     return (
       <View>
-        <Header title="My collectives" hasBackButton={true} navigator={navigator}></Header>
+        <Header title="My collectives" hasBackButton={!isLoggedIn} navigator={navigator}></Header>
         <PaypalReminder></PaypalReminder>
         { groups.map(group => {
           return <Group {...group} navigator={navigator}/>
         })}
+        <Text onPress={() => AsyncStorage.removeItem('logged') }>Clear</Text>
       </View>
     )
   }
