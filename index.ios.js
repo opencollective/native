@@ -25,10 +25,10 @@ class OpenCollective extends React.Component {
   routerMapper(route, navigator) {
     if(route.name === 'home' && !this.state.isLoggedIn) {
       return <LoginForm navigator={navigator} />
-    } else if(route.name === 'user' || this.state.isLoggedIn) {
-      return <GroupList navigator={navigator} isLoggedIn={this.state.isLoggedIn} />
     } else if(route.name === 'transaction') {
       return <GroupTransactions group={route.group} navigator={navigator}/>
+    } else if(route.name === 'user' || this.state.isLoggedIn) {
+      return <GroupList navigator={navigator} isLoggedIn={this.state.isLoggedIn} />
     }
   }
 
