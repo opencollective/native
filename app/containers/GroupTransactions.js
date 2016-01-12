@@ -3,9 +3,28 @@ import Header from '../components/Header'
 import GroupTitle from '../components/GroupTitle'
 import TransactionList from '../components/TransactionList'
 
-const { View, Text } = React;
+const { View, Text, ActionSheetIOS } = React;
+
+const BUTTONS = [
+  'Add funds',
+  'Add expenses',
+  'Cancel'
+];
+const CANCEL_INDEX = 2;
 
 class GroupTransactions extends React.Component {
+   constructor(props) {
+    super(props);
+    this.showActionSheet = this.showActionSheet.bind(this)
+  }
+  showActionSheet() {
+    ActionSheetIOS.showActionSheetWithOptions({
+      options: BUTTONS,
+      cancelButtonIndex: CANCEL_INDEX,
+    },
+    (buttonIndex) => {
+    });
+  }
   render () {
     let { group, navigator } = this.props
     let transactions = [{
@@ -31,6 +50,9 @@ class GroupTransactions extends React.Component {
         <GroupTitle group={group} />
         <Text>Activity Detail</Text>
         <TransactionList transactions={transactions}></TransactionList>
+        <Text onPress={this.showActionSheet}>
+          Add expense
+        </Text>
       </View>
     )
   }
