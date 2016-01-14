@@ -44,7 +44,7 @@ class LoginForm extends React.Component {
           type={Login}
           options={loginOptions}
         />
-      <TouchableHighlight style={styles.button} onPress={this._next}>
+        <TouchableHighlight style={styles.button} onPress={this._next}>
           <Text style={styles.buttonText}>LOGIN</Text>
         </TouchableHighlight>
       </View>

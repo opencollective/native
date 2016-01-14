@@ -24,6 +24,7 @@ class OpenCollective extends React.Component {
   }
 
   routerMapper(route, navigator) {
+    return <TransactionNew navigator={navigator} />
     if(route.name === 'home' && !this.state.isLoggedIn) {
       return <LoginForm navigator={navigator} />
     } else if(route.name === 'transaction') {
