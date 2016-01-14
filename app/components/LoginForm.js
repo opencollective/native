@@ -1,14 +1,15 @@
 import React from 'react-native'
 import t from 'tcomb-form-native'
+
 const { View, Text, Image, TouchableHighlight, StyleSheet, AsyncStorage } = React
 const Form = t.form.Form
 
-var Login = t.struct({
+const Login = t.struct({
   user: t.String,
   password: t.String
 })
 
-var loginOptions = {
+const loginOptions = {
   auto: 'none',
   fields: {
     user: {

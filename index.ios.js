@@ -1,5 +1,6 @@
 import React from 'react-native'
 import LoginForm from './app/components/LoginForm'
+import TransactionNew from './app/components/TransactionNew'
 import GroupTransactions from './app/containers/GroupTransactions'
 import GroupList from './app/containers/GroupList'
 
@@ -27,6 +28,8 @@ class OpenCollective extends React.Component {
       return <LoginForm navigator={navigator} />
     } else if(route.name === 'transaction') {
       return <GroupTransactions group={route.group} navigator={navigator}/>
+    } else if(route.name === 'submitExpense') {
+      return <TransactionNew navigator={navigator} />
     } else if(route.name === 'user' || this.state.isLoggedIn) {
       return <GroupList navigator={navigator} isLoggedIn={this.state.isLoggedIn} />
     }

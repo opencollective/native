@@ -23,6 +23,9 @@ class GroupTransactions extends React.Component {
       cancelButtonIndex: CANCEL_INDEX,
     },
     (buttonIndex) => {
+      if(buttonIndex === 1) {
+        this.props.navigator.push({name:'submitExpense'});
+      }
     });
   }
   render () {
