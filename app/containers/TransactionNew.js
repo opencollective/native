@@ -49,14 +49,9 @@ const Expense = t.struct({
   payment_method: ExpensePaymentMethods
 })
 
-const amountStyles = {
-  paddingTop: 50
-}
-
 const expenseOptions = {
   fields: {
     amount: {
-      stylesheet: amountStyles,
       placeholder: '$ 0.00'
     }
   }
@@ -78,9 +73,6 @@ class TransactionNew extends React.Component {
       else if (response.error) {
         console.log('UIImagePickerManager Error: ', response.error);
       }
-      else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      }
       else {
         // You can display the image using either data:
         // var source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
@@ -89,10 +81,6 @@ class TransactionNew extends React.Component {
         // uri (on iOS)
         var source = {uri: response.uri.replace('file://', ''), isStatic: true};
         console.log(source);
-
-        this.setState({
-          avatarSource: null
-        });
 
         this.setState({
           avatarSource: source
@@ -104,8 +92,8 @@ class TransactionNew extends React.Component {
     return (
       <View style={{flex: 1}}>
         <Header title="Submit expense" hasBackButton={true} navigator={this.props.navigator}/>
-        <ScrollView style={styles.container}>
-          <TouchableHighlight onPress={this.upload} style={styles.uploadContainer}>
+        <ScrollView>
+          <TouchableHighlight onPress={this.upload}>
               <Image source={this.state.avatarSource} style={styles.image} />
           </TouchableHighlight>
           <Form
@@ -113,42 +101,22 @@ class TransactionNew extends React.Component {
             type={Expense}
             options={expenseOptions}
           />
-          <TouchableHighlight style={styles.button}>
-            <Text style={styles.buttonText}>Submit</Text>
-          </TouchableHighlight>
         </ScrollView>
+        <TouchableHighlight style={styles.button}>
+          <Text style={styles.buttonText}>Submit</Text>
+        </TouchableHighlight>
       </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingLeft: 20,
-    paddingRight: 20
-  },
-  uploadContainer: {
-    backgroundColor: '#F9FAFA',
-    flex: 1,
-    height: 150,
-  },
   image: {
     flex: 1,
+    alignSelf: 'center',
     resizeMode: 'contain',
-    width: null,
-    height: null,
-  },
-  button: {
-    height: 36,
-    backgroundColor: '#F3C524',
-    borderRadius: 3,
-    marginBottom: 10,
-    justifyContent: 'center'
-  },
-  buttonText: {
-    fontSize: 18,
-    color: 'white',
-    alignSelf: 'center'
+    width: 200,
+    height: 150
   }
 })
 
