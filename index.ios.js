@@ -1,6 +1,6 @@
 import React from 'react-native'
 import LoginForm from './app/components/LoginForm'
-import TransactionNew from './app/components/TransactionNew'
+import TransactionNew from './app/containers/TransactionNew'
 import GroupTransactions from './app/containers/GroupTransactions'
 import GroupList from './app/containers/GroupList'
 

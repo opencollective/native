@@ -1,6 +1,7 @@
 import React from 'react-native'
-import Header from './Header'
+import Header from '../components/Header'
 import { UIImagePickerManager } from 'NativeModules'
+import FMPicker from 'react-native-fm-picker'
 import t from 'tcomb-form-native'
 
 const Form = t.form.Form
@@ -20,33 +21,31 @@ const imageOptions = {
   allowsEditing: false, // Built in iOS functionality to resize/reposition the image
 };
 
-const ExpenseType = t.enums({
-  'Communications': 'Communications',
-  'Design': 'Design',
-  'Donation': 'Donation',
-  'Engineering': 'Engineering',
-  'Food & Beverage': 'Food & Beverage',
-  'Marketing': 'Marketing',
-  'Legal': 'Legal',
-  'Supplies & materials': 'Supplies & materials',
-  'Travel': 'Travel',
-  'Team': 'Team',
-  'Office': 'Office',
-  'Other': 'Other',
-  'Web services': 'Web services',
-})
+const ExpenseType = [
+  'Communications',
+  'Design',
+  'Donation',
+  'Engineering',
+  'Food & Beverage',
+  'Marketing',
+  'Legal',
+  'Supplies & materials',
+  'Travel',
+  'Team',
+  'Office',
+  'Other',
+  'Web services',
+]
 
-const ExpensePaymentMethods = t.enums({
-    'paypal': 'PayPal',
-    'manual': 'Already paid'
-})
+const ExpensePaymentMethods = [
+    'PayPal',
+    'Already paid'
+]
 
 const Expense = t.struct({
   title: t.String,
   amount: t.String,
-  date: t.Date,
-  type: ExpenseType,
-  payment_method: ExpensePaymentMethods
+  date: t.Date
 })
 
 const expenseOptions = {
@@ -73,6 +72,9 @@ class TransactionNew extends React.Component {
       else if (response.error) {
         console.log('UIImagePickerManager Error: ', response.error);
       }
+      else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      }
       else {
         // You can display the image using either data:
         // var source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
@@ -81,6 +83,10 @@ class TransactionNew extends React.Component {
         // uri (on iOS)
         var source = {uri: response.uri.replace('file://', ''), isStatic: true};
         console.log(source);
+
+        this.setState({
+          avatarSource: null
+        });
 
         this.setState({
           avatarSource: source
@@ -92,8 +98,8 @@ class TransactionNew extends React.Component {
     return (
       <View style={{flex: 1}}>
         <Header title="Submit expense" hasBackButton={true} navigator={this.props.navigator}/>
-        <ScrollView>
-          <TouchableHighlight onPress={this.upload}>
+        <ScrollView style={styles.container}>
+          <TouchableHighlight onPress={this.upload} style={styles.uploadContainer}>
               <Image source={this.state.avatarSource} style={styles.image} />
           </TouchableHighlight>
           <Form
@@ -101,22 +107,46 @@ class TransactionNew extends React.Component {
             type={Expense}
             options={expenseOptions}
           />
+          <Text onPress={() => { this.refs.typePicker.show() }}>Type</Text>
+          <Text onPress={() => { this.refs.typePicker.show() }}>Payment method</Text>
+          <FMPicker ref={'typePicker'} options={ExpenseType} />
+          <FMPicker ref={'paymentPicker'} options={ExpensePaymentMethods} />
+          <TouchableHighlight style={styles.button}>
+            <Text style={styles.buttonText}>Submit</Text>
+          </TouchableHighlight>
         </ScrollView>
-        <TouchableHighlight style={styles.button}>
-          <Text style={styles.buttonText}>Submit</Text>
-        </TouchableHighlight>
       </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    paddingLeft: 20,
+    paddingRight: 20
+  },
+  uploadContainer: {
+    backgroundColor: '#F9FAFA',
+    flex: 1,
+    height: 150,
+  },
   image: {
     flex: 1,
-    alignSelf: 'center',
     resizeMode: 'contain',
-    width: 200,
-    height: 150
+    width: null,
+    height: null,
+  },
+  button: {
+    height: 36,
+    backgroundColor: '#F3C524',
+    borderRadius: 3,
+    marginBottom: 10,
+    justifyContent: 'center'
+  },
+  buttonText: {
+    fontSize: 18,
+    color: 'white',
+    alignSelf: 'center'
   }
 })
 
