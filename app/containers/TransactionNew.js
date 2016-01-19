@@ -2,10 +2,8 @@ import React from 'react-native'
 import Header from '../components/Header'
 import { UIImagePickerManager } from 'NativeModules'
 import FMPicker from 'react-native-fm-picker'
-import t from 'tcomb-form-native'
 
-const Form = t.form.Form
-const { View, Text, StyleSheet, ScrollView, TouchableHighlight, Image } = React
+const { View, Text, TextInput, PixelRatio, StyleSheet, ScrollView, TouchableHighlight, Image } = React
 
 const imageOptions = {
   title: 'Select image', // specify null or empty string to remove the title
@@ -41,20 +39,6 @@ const ExpensePaymentMethods = [
     'PayPal',
     'Already paid'
 ]
-
-const Expense = t.struct({
-  title: t.String,
-  amount: t.String,
-  date: t.Date
-})
-
-const expenseOptions = {
-  fields: {
-    amount: {
-      placeholder: '$ 0.00'
-    }
-  }
-}
 
 class TransactionNew extends React.Component {
   constructor(props) {
@@ -95,6 +79,7 @@ class TransactionNew extends React.Component {
     });
   }
   render () {
+    const { navigator } = this.props;
     return (
       <View style={{flex: 1}}>
         <Header title="Submit expense" hasBackButton={true} navigator={this.props.navigator}/>
@@ -102,15 +87,72 @@ class TransactionNew extends React.Component {
           <TouchableHighlight onPress={this.upload} style={styles.uploadContainer}>
               <Image source={this.state.avatarSource} style={styles.image} />
           </TouchableHighlight>
-          <Form
-            ref="expense"
-            type={Expense}
-            options={expenseOptions}
-          />
-          <Text onPress={() => { this.refs.typePicker.show() }}>Type</Text>
-          <Text onPress={() => { this.refs.typePicker.show() }}>Payment method</Text>
-          <FMPicker ref={'typePicker'} options={ExpenseType} />
-          <FMPicker ref={'paymentPicker'} options={ExpensePaymentMethods} />
+          <View style={styles.rowContainer}>
+            <View style={styles.row}>
+              <Text
+                numberOfLines={1}
+                style={styles.label}
+              >Title</Text>
+              <TextInput
+                style={styles.input}
+              />
+            </View>
+          </View>
+          <View style={styles.rowContainer}>
+            <View style={styles.row}>
+              <Text
+                numberOfLines={1}
+                style={styles.label}
+              >Amount</Text>
+              <TextInput
+                style={styles.input}
+                placeholder='$ 0.00'
+              />
+            </View>
+          </View>
+          <View style={styles.rowContainer}>
+            <View style={styles.row}>
+              <Text
+                numberOfLines={1}
+                style={styles.label}
+              >Date</Text>
+              <TextInput
+                style={styles.input}
+              />
+            </View>
+          </View>
+          <View style={styles.rowContainer}>
+            <View style={styles.row}>
+              <Text
+                numberOfLines={1}
+                style={styles.label}
+              >Category</Text>
+              <TextInput
+                style={styles.input}
+                onFocus={() => { this.refs.category.show() }}
+                value={this.state.category}
+              />
+            </View>
+          </View>
+          <View style={styles.rowContainer}>
+            <View style={styles.row}>
+              <Text
+                numberOfLines={1}
+                style={styles.label}
+              >Method</Text>
+              <TextInput
+                style={styles.input}
+                onFocus={() => { this.refs.method.show() }}
+                value={this.state.method}
+              />
+            </View>
+          </View>
+          <FMPicker ref={'category'} options={ExpenseType} onSubmit={
+              (category) => { this.setState({category}) }
+            }/>
+          <FMPicker ref={'method'} options={ExpensePaymentMethods} onSubmit={
+              (method) => { this.setState({method}) }
+            }/>
           <TouchableHighlight style={styles.button}>
             <Text style={styles.buttonText}>Submit</Text>
           </TouchableHighlight>
@@ -147,6 +189,28 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: 'white',
     alignSelf: 'center'
+  },
+  rowContainer: {
+    backgroundColor: '#FFF',
+    borderBottomWidth: 1 / PixelRatio.get(),
+    borderColor: '#c8c7cc',
+  },
+  row: {
+    flexDirection: 'row',
+    height: 44,
+    alignItems: 'center'
+  },
+  label: {
+    width: 110,
+    fontSize: 15,
+    color: '#000',
+    paddingLeft: 10
+  },
+  input: {
+    fontSize: 15,
+    flex: 1,
+    height: 40,// @todo should be changed if underlined
+    marginTop: 2
   }
 })
 

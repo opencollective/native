@@ -1,27 +1,7 @@
 import React from 'react-native'
-import t from 'tcomb-form-native'
+import { GiftedForm, GiftedFormManager } from 'react-native-gifted-form'
 
 const { View, Text, Image, TouchableHighlight, StyleSheet, AsyncStorage } = React
-const Form = t.form.Form
-
-const Login = t.struct({
-  user: t.String,
-  password: t.String
-})
-
-const loginOptions = {
-  auto: 'none',
-  fields: {
-    user: {
-      placeholder: 'email@example.com'
-    },
-    password: {
-      placeholder: '******',
-      password: true,
-      secureTextEntry: true
-    }
-  }
-}
 
 class LoginForm extends React.Component {
   constructor() {
@@ -39,14 +19,25 @@ class LoginForm extends React.Component {
       <View style={styles.container}>
         <Image style={styles.logo} source={require('../assets/images/logo.png')} />
         <Text style={styles.description}>Collect money & disperse it transparently</Text>
-        <Form
-          ref="form"
-          type={Login}
-          options={loginOptions}
+        <GiftedForm formName='login' />
+        <GiftedForm.TextInputWidget
+          name='username'
+          title='Username'
+          placeholder='email@example.com'
         />
-        <TouchableHighlight style={styles.button} onPress={this._next}>
-          <Text style={styles.buttonText}>LOGIN</Text>
-        </TouchableHighlight>
+        <GiftedForm.TextInputWidget
+          name='password'
+          title='Password'
+          placeholder='******'
+          secureTextEntry={true}
+        />
+        <GiftedForm.SubmitWidget
+          title='LOGIN'
+          obSubmit={this._next}
+        />
+        // <TouchableHighlight style={styles.button} onPress={this._next}>
+        //   <Text style={styles.buttonText}>LOGIN</Text>
+        // </TouchableHighlight>
       </View>
     )
   }
