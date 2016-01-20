@@ -9,7 +9,7 @@ class LoginForm extends React.Component {
     this._next = this._next.bind(this);
   }
   _next() {
-    AsyncStorage.setItem("logged", 'true');
+    AsyncStorage.setItem("logged", 'true')
     this.props.navigator.push({
       name: 'user'
     })
@@ -33,11 +33,8 @@ class LoginForm extends React.Component {
         />
         <GiftedForm.SubmitWidget
           title='LOGIN'
-          obSubmit={this._next}
+          onSubmit={this._next}
         />
-        // <TouchableHighlight style={styles.button} onPress={this._next}>
-        //   <Text style={styles.buttonText}>LOGIN</Text>
-        // </TouchableHighlight>
       </View>
     )
   }

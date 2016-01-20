@@ -2,8 +2,9 @@ import React from 'react-native'
 import Header from '../components/Header'
 import { UIImagePickerManager } from 'NativeModules'
 import FMPicker from 'react-native-fm-picker'
+import CustomActionSheet from 'react-native-custom-action-sheet'
 
-const { View, Text, TextInput, PixelRatio, StyleSheet, ScrollView, TouchableHighlight, Image } = React
+const { View, Text, TextInput, PixelRatio, DatePickerIOS, StyleSheet, ScrollView, TouchableHighlight, Image } = React
 
 const imageOptions = {
   title: 'Select image', // specify null or empty string to remove the title
@@ -44,7 +45,16 @@ class TransactionNew extends React.Component {
   constructor(props) {
     super(props)
     this.upload = this.upload.bind(this)
-    this.state = { avatarSource: require('../assets/images/camera.png') }
+    this.onDateChange = this.onDateChange.bind(this)
+    this.toggleModal = this.toggleModal.bind(this)
+    this.state = {
+      avatarSource: require('../assets/images/camera.png'),
+      date: new Date(),
+      modalVisible: false
+    }
+  }
+  onDateChange(date) {
+    this.setState({date})
   }
   upload() {
     UIImagePickerManager.showImagePicker(imageOptions, (response) => {
@@ -77,6 +87,9 @@ class TransactionNew extends React.Component {
         });
       }
     });
+  }
+  toggleModal() {
+    this.setState({ modalVisible: !this.state.modalVisible })
   }
   render () {
     const { navigator } = this.props;
@@ -118,6 +131,8 @@ class TransactionNew extends React.Component {
               >Date</Text>
               <TextInput
                 style={styles.input}
+                onFocus={this.toggleModal}
+                value={this.state.date.toLocaleDateString()}
               />
             </View>
           </View>
@@ -146,6 +161,13 @@ class TransactionNew extends React.Component {
                 value={this.state.method}
               />
             </View>
+          </View>
+          <View>
+            <CustomActionSheet modalVisible={this.state.modalVisible} onCancel={this.toggleModal}>
+              <View style={{backgroundColor: 'white', marginBottom: 10, borderRadius: 5}}>
+                <DatePickerIOS mode={"date"} date={this.state.date} onDateChange={this.onDateChange} />
+              </View>
+            </CustomActionSheet>
           </View>
           <FMPicker ref={'category'} options={ExpenseType} onSubmit={
               (category) => { this.setState({category}) }
