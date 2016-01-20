@@ -45,13 +45,22 @@ class TransactionNew extends React.Component {
   constructor(props) {
     super(props)
     this.upload = this.upload.bind(this)
+    this.onChangeText = this.onChangeText.bind(this)
     this.onDateChange = this.onDateChange.bind(this)
     this.toggleModal = this.toggleModal.bind(this)
     this.state = {
       avatarSource: require('../assets/images/camera.png'),
+      title: null,
+      amount: null,
       date: new Date(),
+      method: null,
+      category: null,
+      note: null,
       modalVisible: false
     }
+  }
+  onChangeText(type) {
+    this.setState({...type})
   }
   onDateChange(date) {
     this.setState({date})
@@ -108,6 +117,7 @@ class TransactionNew extends React.Component {
               >Title</Text>
               <TextInput
                 style={styles.input}
+                onChangeText={(title) => this.onChangeText({title})}
               />
             </View>
           </View>
@@ -119,7 +129,9 @@ class TransactionNew extends React.Component {
               >Amount</Text>
               <TextInput
                 style={styles.input}
+                keyboardType={'numeric'}
                 placeholder='$ 0.00'
+                onChangeText={(amount) => this.onChangeText({amount})}
               />
             </View>
           </View>
@@ -159,6 +171,19 @@ class TransactionNew extends React.Component {
                 style={styles.input}
                 onFocus={() => { this.refs.method.show() }}
                 value={this.state.method}
+              />
+            </View>
+          </View>
+          <View style={styles.rowContainer}>
+            <View style={styles.row}>
+              <Text
+                numberOfLines={1}
+                style={styles.label}
+              >Note</Text>
+              <TextInput
+                style={styles.input}
+                multiline={true}
+                onChangeText={(note) => this.onChangeText({note})}
               />
             </View>
           </View>
