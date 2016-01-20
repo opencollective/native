@@ -4,7 +4,17 @@ import { UIImagePickerManager } from 'NativeModules'
 import FMPicker from 'react-native-fm-picker'
 import CustomActionSheet from 'react-native-custom-action-sheet'
 
-const { View, Text, TextInput, PixelRatio, DatePickerIOS, StyleSheet, ScrollView, TouchableHighlight, Image } = React
+const {
+  View,
+  Text,
+  TextInput,
+  PixelRatio,
+  DatePickerIOS,
+  StyleSheet,
+  ScrollView,
+  TouchableHighlight,
+  Image,
+  AsyncStorage } = React
 
 const imageOptions = {
   title: 'Select image', // specify null or empty string to remove the title
@@ -46,11 +56,11 @@ class TransactionNew extends React.Component {
     super(props)
     this.upload = this.upload.bind(this)
     this.onChangeText = this.onChangeText.bind(this)
-    this.onDateChange = this.onDateChange.bind(this)
     this.toggleModal = this.toggleModal.bind(this)
+    this.saveExpense = this.saveExpense.bind(this)
     this.state = {
       avatarSource: require('../assets/images/camera.png'),
-      title: null,
+      description: null,
       amount: null,
       date: new Date(),
       method: null,
@@ -61,9 +71,6 @@ class TransactionNew extends React.Component {
   }
   onChangeText(type) {
     this.setState({...type})
-  }
-  onDateChange(date) {
-    this.setState({date})
   }
   upload() {
     UIImagePickerManager.showImagePicker(imageOptions, (response) => {
@@ -100,6 +107,10 @@ class TransactionNew extends React.Component {
   toggleModal() {
     this.setState({ modalVisible: !this.state.modalVisible })
   }
+  saveExpense() {
+    AsyncStorage.setItem('expense', JSON.stringify(this.state))
+    this.props.navigator.push({name: 'transaction', group: this.props.group})
+  }
   render () {
     const { navigator } = this.props;
     return (
@@ -117,7 +128,7 @@ class TransactionNew extends React.Component {
               >Title</Text>
               <TextInput
                 style={styles.input}
-                onChangeText={(title) => this.onChangeText({title})}
+                onChangeText={(description) => this.onChangeText({description})}
               />
             </View>
           </View>
@@ -190,7 +201,7 @@ class TransactionNew extends React.Component {
           <View>
             <CustomActionSheet modalVisible={this.state.modalVisible} onCancel={this.toggleModal}>
               <View style={{backgroundColor: 'white', marginBottom: 10, borderRadius: 5}}>
-                <DatePickerIOS mode={"date"} date={this.state.date} onDateChange={this.onDateChange} />
+                <DatePickerIOS mode={"date"} date={this.state.date} onDateChange={(date) => this.onChangeText({date})} />
               </View>
             </CustomActionSheet>
           </View>
@@ -200,7 +211,7 @@ class TransactionNew extends React.Component {
           <FMPicker ref={'method'} options={ExpensePaymentMethods} onSubmit={
               (method) => { this.setState({method}) }
             }/>
-          <TouchableHighlight style={styles.button}>
+          <TouchableHighlight style={styles.button} onPress={this.saveExpense}>
             <Text style={styles.buttonText}>Submit</Text>
           </TouchableHighlight>
         </ScrollView>
