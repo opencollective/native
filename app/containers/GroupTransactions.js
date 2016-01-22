@@ -3,7 +3,7 @@ import Header from '../components/Header'
 import GroupTitle from '../components/GroupTitle'
 import TransactionList from '../components/TransactionList'
 
-const { View, Text, ActionSheetIOS, AsyncStorage } = React;
+const { View, Text, ActionSheetIOS, AsyncStorage, StyleSheet, TouchableHighlight } = React;
 
 const BUTTONS = [
   'Add funds',
@@ -47,14 +47,34 @@ class GroupTransactions extends React.Component {
       <View>
         <Header title={group.name} hasBackButton={true} navigator={navigator}></Header>
         <GroupTitle group={group} />
-        <Text>Activity Detail</Text>
-        <TransactionList transactions={this.state.transactions}></TransactionList>
-        <Text onPress={this.showActionSheet}>
-          Add expense
-        </Text>
+        <View style={styles.container}>
+          <Text>Activity Detail</Text>
+          <TransactionList transactions={this.state.transactions}></TransactionList>
+          <TouchableHighlight style={styles.button} onPress={this.showActionSheet}>
+            <Text style={styles.buttonText}>Add expense</Text>
+          </TouchableHighlight>
+        </View>
       </View>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 20
+  },
+  button: {
+    height: 36,
+    backgroundColor: '#7FADF2',
+    borderRadius: 3,
+    marginBottom: 10,
+    justifyContent: 'center'
+  },
+  buttonText: {
+    fontSize: 18,
+    color: 'white',
+    alignSelf: 'center'
+  },
+})
 
 export default GroupTransactions;
